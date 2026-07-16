@@ -4,7 +4,7 @@
 
 # GIỚI THIỆU
 FPT PE Python AutoGrader là một ứng dụng web nội bộ (Local Web App) được thiết
-kế đặc biệt để chấm điểm tự động các bài  thực hành lập trình Python 
+kế đặc biệt để chấm điểm tự động các bài thực hành lập trình Python của trường Đại học FPT. 
 
 Ứng dụng cung cấp một giao diện web Dark-Mode hiện đại, cho phép bạn chọn một
 thư mục chứa mã nguồn (.py) và các file test case, sau đó tự động chạy, kiểm 
