@@ -1,0 +1,283 @@
+================================================================================
+                    PROMPT GUIDE - GENERATE TEST CASES
+              Compatible with Local Code Grader (grader_app)
+================================================================================
+
+Bạn là một AI hỗ trợ tạo test case cho các bài thi thực hành lập trình Python
+(FPT PE - Practical Exam). Các test case bạn tạo sẽ được sử dụng với một hệ 
+thống chấm điểm tự động (Local Code Grader). Hãy tuân thủ chính xác các quy 
+tắc dưới đây.
+
+================================================================================
+1. CẤU TRÚC THƯ MỤC (FOLDER STRUCTURE)
+================================================================================
+
+Mỗi câu hỏi (Question) cần một thư mục riêng với cấu trúc sau:
+
+  Q1/                          ← Tên thư mục = tên câu hỏi
+  ├── Q1.py                    ← File code Python (bài làm mẫu/đề bài)
+  ├── f1_inp.txt               ← Input cho test case 1
+  ├── f1_out.txt               ← Expected output cho test case 1
+  ├── f2_inp.txt               ← Input cho test case 2
+  ├── f2_out.txt               ← Expected output cho test case 2
+  ├── f3_inp.txt               ← Input cho test case 3
+  ├── f3_out.txt               ← Expected output cho test case 3
+  └── data.txt                 ← (Tùy chọn) File dữ liệu nếu code cần đọc file
+
+QUY TẮC ĐẶT TÊN FILE:
+  - File input: tên PHẢI chứa từ "inp" (ví dụ: f1_inp.txt, inp1.txt, test_inp.txt)
+  - File output: tên PHẢI chứa từ "out" (ví dụ: f1_out.txt, out1.txt, test_out.txt)  
+  - File code: đuôi .py (ví dụ: Q1.py, Q2.py)
+  - File dữ liệu: KHÔNG chứa "inp" hoặc "out" trong tên (ví dụ: data.txt, input_data.csv → SAI vì chứa "inp")
+  
+  ⚠️ QUAN TRỌNG: Hệ thống nhận diện file dựa trên TÊN FILE:
+     - Có "inp" trong tên → được coi là file INPUT
+     - Có "out" trong tên → được coi là file OUTPUT  
+     - Đuôi .py → được coi là CODE
+     - Còn lại → được coi là FILE DỮ LIỆU ĐI KÈM (sẽ được copy vào cùng thư mục chạy code)
+
+  ⚠️ CẶP INP/OUT: Các file inp và out được ghép cặp theo THỨ TỰ TÊN (sắp xếp tự nhiên).
+     Ví dụ: f1_inp.txt ghép với f1_out.txt, f2_inp.txt ghép với f2_out.txt, v.v.
+     → Đảm bảo số lượng file inp = số lượng file out.
+
+================================================================================
+2. CÁCH TẠO FILE INPUT (inp)
+================================================================================
+
+File input chứa CHÍNH XÁC những gì người dùng sẽ gõ vào bàn phím khi chạy 
+chương trình. Mỗi lần gọi input() tương ứng với MỘT DÒNG trong file inp.
+
+CẤU TRÚC BÀI THI FPT PE:
+Các bài thi thường có menu chọn hàm (f1, f2, f3...). Dòng đầu tiên của input
+thường là SỐ THỨ TỰ CỦA HÀM CẦN TEST.
+
+--- VÍ DỤ 1: Test hàm nhận số (Q1 - f1) ---
+Code có menu:
+  print(" 1. Test f1 (1 mark)")
+  print(" 2. Test f2 (1 mark)")  
+  print(" 3. Test f3 (1 mark)")
+  print(" Your selection (1 -> 3): ")
+  choice = int(input())          ← Dòng 1 input: chọn hàm
+  
+  # Nếu choice == 1:
+  num = int(input("Enter the number of terms: "))  ← Dòng 2 input: tham số
+
+File f1_inp.txt:
+  1
+  5
+
+Giải thích:
+  - Dòng 1: "1" → chọn hàm f1
+  - Dòng 2: "5" → truyền num = 5
+
+--- VÍ DỤ 2: Test hàm nhận chuỗi (Q1 - f3) ---
+File f3_inp.txt:
+  3
+  PE PFP191
+
+Giải thích:
+  - Dòng 1: "3" → chọn hàm f3
+  - Dòng 2: "PE PFP191" → truyền chuỗi
+
+--- VÍ DỤ 3: Test hàm đọc file (Q2 - f1) ---
+Code yêu cầu nhập tên file:
+  fileName = input()             ← Tên file cần đọc
+
+File f1_inp.txt:
+  1
+  data.txt
+
+Giải thích:
+  - Dòng 1: "1" → chọn hàm f1  
+  - Dòng 2: "data.txt" → tên file dữ liệu (file này PHẢI có trong cùng thư mục)
+
+--- VÍ DỤ 4: Test hàm nhận nhiều đối tượng (Q3 - f1) ---
+Code nhập danh sách book:
+  n = input('Enter the number of books: ')
+  for i in range(1, int(n)+1):
+      name = input("Enter name : ")
+      year = int(input("Enter year : "))
+      doi = input("Enter doi : ")
+
+File f1_inp.txt:
+  1
+  3
+  Holy Spirit
+  1989
+  10.1000/23627272
+  The Last Letter
+  2001
+  10.1000/24766188
+  Love Story
+  2010
+  10.1000/24766188
+
+Giải thích:
+  - Dòng 1: "1" → chọn hàm f1
+  - Dòng 2: "3" → số lượng book
+  - Dòng 3-5: Thông tin book 1 (name, year, doi)
+  - Dòng 6-8: Thông tin book 2
+  - Dòng 9-11: Thông tin book 3
+
+================================================================================
+3. CÁCH TẠO FILE OUTPUT (out)
+================================================================================
+
+File output chứa TOÀN BỘ những gì chương trình in ra màn hình (stdout) khi chạy
+với input tương ứng. BAO GỒM CẢ:
+  - Dòng menu chọn hàm
+  - Các prompt input (nếu print trước input)
+  - Kết quả OUTPUT
+  - Dòng "FINISH" ở cuối
+
+⚠️ QUAN TRỌNG: Output phải CHÍNH XÁC từng ký tự, bao gồm:
+  - Khoảng trắng (space) ở đầu/cuối dòng
+  - Dấu hai chấm (:) và khoảng trắng sau nó
+  - Các dòng trống
+  - Khi so sánh, hệ thống sẽ BỎ QUA khoảng trắng cuối mỗi dòng (trailing spaces)
+    và dòng trống cuối cùng
+
+--- VÍ DỤ 1: Output cho Q1 - f1 (num=5) ---
+File f1_out.txt:
+ 1. Test f1 (1 mark)
+ 2. Test f2 (1 mark)
+ 3. Test f3 (1 mark)
+ Your selection (1 -> 3): 
+Enter the number of terms: OUTPUT
+0.6333333333333333
+FINISH
+
+Giải thích cấu trúc output:
+  Dòng 1-3: Menu (print bởi hàm main)
+  Dòng 4: "Your selection (1 -> 3): " (print bởi main, có space cuối)
+  Dòng 5: "Enter the number of terms: OUTPUT" 
+           → Prompt của input() nối liền với print("OUTPUT")
+           → Vì input("Enter the number of terms: ") in ra prompt TRÊN CÙNG DÒNG
+              rồi print("OUTPUT") in tiếp trên dòng mới, nhưng prompt không có \n
+              nên chúng TRÊN CÙNG 1 DÒNG trong stdout
+  Dòng 6: Kết quả tính toán
+  Dòng 7: "FINISH" (print bởi main)
+
+--- VÍ DỤ 2: Output cho Q2 - f1 (đọc file data.txt) ---
+File f1_out.txt:
+ 1. Test f1 (1 mark)
+ 2. Test f2 (2 mark)
+ Your selection (1 -> 2): 
+OUTPUT
+2
+3
+4
+5
+7
+9
+11
+15
+17
+20
+23
+29
+31
+FINISH
+
+================================================================================
+4. FILE DỮ LIỆU ĐI KÈM (data files)
+================================================================================
+
+Nếu code có lệnh open() để đọc file (ví dụ: open("data.txt", "r")):
+  - Tạo file dữ liệu với ĐÚNG TÊN mà code sử dụng (ví dụ: data.txt)
+  - Đặt file dữ liệu CÙNG THƯ MỤC với file .py và các file inp/out
+  - TÊN FILE dữ liệu KHÔNG ĐƯỢC chứa "inp" hoặc "out" 
+    (nếu không hệ thống sẽ nhầm thành test case)
+
+Ví dụ: code có open("data.txt", "r") → tạo file data.txt chứa dữ liệu cần thiết.
+
+================================================================================
+5. QUY TRÌNH TẠO TEST CASE TỪNG BƯỚC
+================================================================================
+
+Bước 1: ĐỌC CODE
+  - Đọc kỹ file .py để hiểu:
+    a) Menu có bao nhiêu hàm (f1, f2, f3...)?
+    b) Mỗi hàm cần input gì?
+    c) Code có đọc file nào không (open())?
+    d) Mỗi hàm tính toán/in ra kết quả gì?
+
+Bước 2: XÁC ĐỊNH SỐ TEST CASE
+  - Tạo ÍT NHẤT 1 test case cho MỖI HÀM trong menu
+  - Mỗi test case = 1 cặp file (fN_inp.txt + fN_out.txt)
+  - Ví dụ: code có 3 hàm → ít nhất 3 test case (f1, f2, f3)
+
+Bước 3: VIẾT FILE INPUT
+  - Dòng đầu: số thứ tự hàm cần test (1, 2, 3...)
+  - Các dòng tiếp: tham số mà hàm cần, mỗi input() = 1 dòng
+
+Bước 4: CHẠY THỬ CODE TRONG ĐẦU (hoặc thực tế) ĐỂ XÁC ĐỊNH OUTPUT
+  - Theo dõi từng lệnh print() trong code
+  - GHI LẠI CHÍNH XÁC mọi thứ in ra stdout
+  - Lưu ý: input("prompt: ") sẽ in "prompt: " ra stdout TRƯỚC KHI nhận input
+  - Nếu code dùng print(end=' ') hoặc print(end='') → không xuống dòng
+
+Bước 5: VIẾT FILE OUTPUT
+  - Ghi lại TOÀN BỘ stdout từ đầu đến cuối
+  - Bao gồm menu, prompts, kết quả, và "FINISH"
+
+Bước 6: KIỂM TRA
+  - Đảm bảo số file inp = số file out
+  - Đảm bảo tên file được đánh số đúng thứ tự
+  - Nếu có file dữ liệu → đảm bảo tên đúng và nội dung phù hợp
+
+================================================================================
+6. LƯU Ý ĐẶC BIỆT VỀ STDOUT
+================================================================================
+
+a) input() có prompt:
+   input("Enter name: ") → in ra "Enter name: " trên stdout (KHÔNG có newline)
+   → Dòng tiếp theo print() sẽ nối vào SAU prompt trên CÙNG DÒNG
+
+b) print() mặc định có newline:
+   print("hello") → "hello\n"
+   print("A", end=' ') → "A " (không xuống dòng)
+
+c) Nhiều print trên cùng dòng:
+   print("A", end=' ')
+   print("B", end=' ')  
+   print()               ← Xuống dòng
+   → Output: "A B \n"
+
+d) input() không có prompt:
+   choice = int(input()) → KHÔNG in gì ra stdout
+   → Dòng trước và sau KHÔNG bị ảnh hưởng
+
+================================================================================
+7. MẪU PROMPT ĐỂ COPY/PASTE CHO CHATBOT
+================================================================================
+
+Khi cung cấp đề bài cho chatbot để gen test case, hãy dùng prompt sau:
+
+---START PROMPT---
+Hãy tạo test case cho bài thi PE với thông tin sau:
+
+[DÁN CODE .py VÀO ĐÂY]
+
+[DÁN ĐỀ BÀI / MÔ TẢ YÊU CẦU VÀO ĐÂY (nếu có)]
+
+[DÁN TEST MẪU VÀO ĐÂY (nếu có)]
+
+Yêu cầu:
+1. Tạo test case theo đúng format của hệ thống chấm tự động:
+   - Mỗi test case gồm 1 cặp file: fN_inp.txt và fN_out.txt (N = 1, 2, 3...)
+   - File inp chứa input cho stdin (mỗi input() = 1 dòng)
+   - File out chứa TOÀN BỘ stdout (bao gồm menu, prompts, OUTPUT, FINISH)
+   - Nếu code đọc file (open()), tạo thêm file dữ liệu với đúng tên
+
+2. Tạo ít nhất 1 test case cho mỗi hàm trong menu.
+
+3. Đảm bảo output CHÍNH XÁC từng ký tự, bao gồm:
+   - Khoảng trắng đầu dòng menu (nếu có)
+   - Prompt của input() xuất hiện trên stdout
+   - Dòng "FINISH" cuối cùng
+
+4. Xuất kết quả dưới dạng nội dung từng file, rõ ràng tên file.
+---END PROMPT---
+
+================================================================================

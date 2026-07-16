@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Code Grader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Code Grader</h1>
+            <p>Paste your Python code, provide test cases, and grade it locally.</p>
+        </header>
+
+        <main class="glass-panel">
+            <!-- Code Section -->
+            <div class="editor-section">
+                <div class="header-row">
+                    <h2>📝 Python Code</h2>
+                    <div class="header-actions">
+                        <label class="file-upload" title="Upload a single .py file">
+                            <input type="file" id="code-file" accept=".py">
+                            <span>📄 Upload .py</span>
+                        </label>
+                        <label class="file-upload folder-upload" title="Select a folder containing .py, inp.txt, out.txt">
+                            <input type="file" id="folder-input" webkitdirectory multiple>
+                            <span>📁 Select Folder</span>
+                        </label>
+                    </div>
+                </div>
+                <textarea id="code-input" placeholder="Paste your Python code here, or upload a .py file, or select a folder..." spellcheck="false"></textarea>
+            </div>
+
+            <!-- Test Cases Section -->
+            <div class="test-cases-section">
+                <div class="header-row">
+                    <h2>🧪 Test Cases</h2>
+                    <button id="add-test-btn" class="add-btn">+ Add Test Case</button>
+                </div>
+                <div id="test-cases-container">
+                    <!-- Test cases will be rendered here by JS -->
+                </div>
+            </div>
+
+            <button id="grade-btn" class="grade-btn">⚡ Grade All Test Cases</button>
+
+            <!-- Results Summary -->
+            <div id="result-section" class="result-section hidden">
+                <div class="summary-bar">
+                    <div class="summary-left">
+                        <h2>Results</h2>
+                        <span id="summary-badge" class="summary-badge"></span>
+                    </div>
+                    <div class="summary-right">
+                        <div class="progress-bar-container">
+                            <div id="progress-bar" class="progress-bar"></div>
+                        </div>
+                        <span id="summary-text" class="summary-text"></span>
+                    </div>
+                </div>
+
+                <div id="results-list" class="results-list">
+                    <!-- Individual results rendered by JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
