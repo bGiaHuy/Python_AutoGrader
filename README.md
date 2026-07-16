@@ -1,4 +1,4 @@
-#Python AutoGrader
+Python AutoGrader
 
 # GIỚI THIỆU
 
